@@ -45,6 +45,8 @@ resource "aws_instance" "web" {
     systemctl enable nginx
     echo "<h1>Hello from Terraform!</h1>" > /var/www/html/index.html
   EOF
+
+  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 }
 
 output "instance_public_ip" {
