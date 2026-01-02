@@ -35,6 +35,16 @@ resource "aws_instance" "web" {
   tags = {
     Name = "bootcamp-web-server"
   }
+
+  user_data_replace_on_change = true
+  user_data                   = <<-EOF
+    #!/bin/bash
+    apt update -y
+    DEBIAN_FRONTEND=noninteractive apt install -y nginx
+    systemctl start nginx
+    systemctl enable nginx
+    echo "<h1>Hello from Terraform!</h1>" > /var/www/html/index.html
+  EOF
 }
 
 output "instance_public_ip" {
