@@ -19,23 +19,18 @@ resource "aws_security_group" "web" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    Name = "bootcamp-web-sg"
-  }
+  tags = var.common_tags
 }
 
 resource "aws_instance" "web" {
   ami           = "ami-00d8fc944fb171e29"
   instance_type = var.instance_type
 
-  subnet_id                   = aws_subnet.public.id
+  subnet_id                   = aws_subnet.public[0].id
   vpc_security_group_ids      = [aws_security_group.web.id]
   associate_public_ip_address = true
 
-  tags = {
-    Name = "bootcamp-web-server"
-  }
-
+  tags                        = var.common_tags
   user_data_replace_on_change = true
   user_data                   = <<-EOF
     #!/bin/bash
